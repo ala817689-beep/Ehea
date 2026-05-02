@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "Professional": {
+      "title": "Professional",
+      "description": "A skilled service provider in the platform",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "mainProfession": { "type": "string" },
+        "subSkills": { "type": "array", "items": { "type": "string" } },
+        "province": { "type": "string" },
+        "area": { "type": "string" },
+        "portfolioImages": { "type": "array", "items": { "type": "string" } },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "balance": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["active", "suspended"] }
+      },
+      "required": ["userId", "fullName", "phone", "mainProfession", "province", "area"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "A review given by a client to a professional",
+      "type": "object",
+      "properties": {
+        "professionalId": { "type": "string" },
+        "clientName": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["professionalId", "rating", "createdAt"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "A financial transaction for commission or balance top-up",
+      "type": "object",
+      "properties": {
+        "professionalId": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["deposit", "commission"] },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["professionalId", "amount", "type", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/professionals/{professionalId}": {
+      "schema": "Professional",
+      "description": "Master record of professionals"
+    },
+    "/professionals/{professionalId}/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Reviews for a specific professional"
+    },
+    "/professionals/{professionalId}/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Financial history for a professional"
+    }
+  }
+}
